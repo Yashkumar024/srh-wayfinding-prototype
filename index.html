@@ -11,22 +11,88 @@
 </head>
 <body>
 
-<header class="page-head">
-  <h1>Campus Berlin <em>Wayfinding</em></h1>
-  <p>A UX design prototype for an SRH University Berlin entrance kiosk that hands a route off to the student’s phone browser with a QR code. It includes low-fidelity wireframes, matching high-fidelity screens and a click-through mockup.</p>
-  <p>The kiosk app shows real QR codes: scan one with your phone camera and the route opens in your phone’s browser. There is no GPS, no backend and no route calculation, and every route is an illustrative placeholder.</p>
-  <nav class="nav">
+<header class="topbar">
+  <a class="brand" href="./"><span class="mark">SRH</span><span>Campus Berlin <b>Wayfinding</b></span></a>
+  <nav class="topnav" aria-label="Main">
+    <a href="#how">How it works</a>
+    <a href="#try">Try it</a>
+    <a href="#design">Design</a>
+    <a class="topnav-cta" href="kiosk.html">Open kiosk</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <span class="kicker">Student design prototype · SRH University Berlin</span>
+    <h1>From the front door <em>to the right room.</em></h1>
+    <p class="hero-lede">A touchscreen kiosk outside the main entrance hands your route to your phone with a single QR scan. Then it guides you there one clear step at a time. No app, no sign-in.</p>
+    <div class="cta-row">
+      <a class="cta cta-primary" href="kiosk.html">Open the kiosk <span aria-hidden="true">→</span></a>
+      <a class="cta cta-ghost" href="#try">Try it on your phone</a>
+    </div>
+    <ul class="hero-facts">
+      <li><b>4</b> destinations</li>
+      <li><b>1</b> QR scan</li>
+      <li><b>0</b> apps to install</li>
+    </ul>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-block"></div>
+    <div class="hero-stage" id="heroStage"></div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <p class="section-kicker">How it works</p>
+  <h2 class="section-title">Three steps. <em>No guesswork.</em></h2>
+  <ol class="how-steps">
+    <li>
+      <span class="how-num">01</span>
+      <h3>Choose where you’re going</h3>
+      <p>At the kiosk outside the entrance, tap Room C 1.02, Room B 1.02, the Library or the Event Space. Every button sits low enough to reach from a wheelchair.</p>
+    </li>
+    <li>
+      <span class="how-num">02</span>
+      <h3>Scan the QR code</h3>
+      <p>Point your phone camera at the code. The route opens straight in your browser, in English or German.</p>
+    </li>
+    <li>
+      <span class="how-num">03</span>
+      <h3>Follow one step at a time</h3>
+      <p>A big arrow, one short instruction and a progress bar that fills as you go, until you see “You’ve arrived”.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="try" id="try">
+  <div class="try-copy">
+    <p class="section-kicker on-dark">Try it now</p>
+    <h2 class="section-title on-dark">Scan with your <em>phone camera.</em></h2>
+    <p>This code opens the phone route, where you can pick a destination and walk through the directions. Or open the kiosk on a laptop and scan its code, exactly as a student would at the entrance.</p>
+    <div class="cta-row">
+      <a class="cta cta-primary" href="kiosk.html">Open the kiosk <span aria-hidden="true">→</span></a>
+      <a class="cta cta-ghost on-dark" href="route.html">Open the phone route</a>
+    </div>
+  </div>
+  <figure class="try-qr">
+    <div class="try-qr-box" id="homeQR"></div>
+    <figcaption>Opens <b>route.html</b> in your browser</figcaption>
+  </figure>
+</section>
+
+<section class="design-intro" id="design">
+  <p class="section-kicker">Design documentation</p>
+  <h2 class="section-title">How it was <em>designed.</em></h2>
+  <p class="lede">The user flow, low-fidelity wireframes, high-fidelity screens, a click-through mockup and the accessibility decisions behind them.</p>
+  <nav class="doc-nav" aria-label="Design sections">
     <a href="#flow-sec">User flow</a>
     <a href="#wireframes">Low-fi wireframes</a>
     <a href="#hifi">High-fi screens</a>
     <a href="#clickthrough">Click-through</a>
-    <a href="#notes">Accessibility & placeholders</a>
-    <a class="nav-live" href="kiosk.html">Open the live kiosk app →</a>
-    <a class="nav-live" href="route.html">Open the phone route →</a>
+    <a href="#notes">Accessibility &amp; placeholders</a>
   </nav>
-</header>
-
-<p class="disclaimer"><strong>Placeholder routes:</strong> <span>All maps, directions, distances and times here are illustrative placeholders. No verified SRH campus floor plan or route information was available. Do not use them as real campus directions.</span></p>
+  <p class="disclaimer"><strong>Placeholder routes:</strong> <span>All maps, directions, distances and times are illustrative placeholders. No verified SRH campus floor plan was available, so do not use them as real campus directions.</span></p>
+</section>
 
 <section class="block" id="flow-sec">
   <h2>User <em>flow</em></h2>
@@ -114,7 +180,16 @@
   </div>
 </section>
 
-<footer>Visual UX prototype · not a functional navigation app · SRH-inspired styling for design review.</footer>
+<footer class="site-foot">
+  <div class="brand"><span class="mark">SRH</span><span>Campus Berlin <b>Wayfinding</b></span></div>
+  <nav aria-label="Footer">
+    <a href="kiosk.html">Kiosk</a>
+    <a href="route.html">Phone route</a>
+    <a href="#design">Design</a>
+    <a href="https://github.com/Yashkumar024/srh-wayfinding-prototype">Source on GitHub</a>
+  </nav>
+  <p>Student design prototype with SRH-inspired styling. Routes are illustrative placeholders. This is not an official SRH service.</p>
+</footer>
 
 <script src="routes.js"></script>
 <script src="qr-codes.js"></script>

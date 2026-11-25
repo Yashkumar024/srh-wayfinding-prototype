@@ -1,6 +1,6 @@
 /* Visual prototype renderer. No GPS, no QR scanning, no routing — screens only. */
 (function () {
-  const { D, R, byId, icon, dirSVG, mapSVG, kioskWelcome, kioskQR, phoneWaiting, phoneOverview, phoneStep, phoneArrival, reachOverlay } = window.WFS;
+  const { D, R, byId, icon, dirSVG, mapSVG, kioskWelcome, kioskQR, phoneWaiting, phoneOverview, phoneStep, phoneArrival, reachOverlay, qrSVG } = window.WFS;
   const $ = (s, el = document) => el.querySelector(s);
 
   /* ---------- Wireframes ---------- */
@@ -163,6 +163,28 @@
     document.querySelectorAll("[data-hfdest]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.hfdest === hfDest));
   }
 
+
+  /* ---------- Home: hero visual + "try it" QR ---------- */
+  const HERO_W = 600, HERO_H = 660;
+  function buildHero() {
+    const stage = $("#heroStage");
+    if (!stage) return;
+    stage.innerHTML =
+      `<div class="hero-kiosk">${kioskFrame(kioskQR("c102"))}</div>` +
+      `<div class="hero-phone">${phoneFrame(phoneStep("c102", 1))}</div>`;
+    fitHero();
+    const qr = $("#homeQR");
+    if (qr) qr.innerHTML = qrSVG("home");
+  }
+  function fitHero() {
+    const stage = $("#heroStage");
+    if (!stage) return;
+    const box = stage.parentElement;
+    const s = Math.min(1, box.clientWidth / HERO_W);
+    stage.style.transform = `scale(${s})`;
+    box.style.height = `${HERO_H * s}px`;
+  }
+
   /* ---------- Click-through demo (mock state only) ---------- */
   const st = { k: "welcome", dest: null, lang: "en", help: false, p: "waiting", step: 0 };
   function renderDemo() {
@@ -192,6 +214,8 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    buildHero();
+    window.addEventListener("resize", fitHero);
     buildFlow();
     buildWireframes();
     buildHifi();

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Berlin Wayfinding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="page-head">
+  <h1>Campus Berlin <em>Wayfinding</em></h1>
+  <p>A UX design prototype for an SRH University Berlin entrance kiosk that hands a route off to the student’s phone browser with a QR code. It includes low-fidelity wireframes, matching high-fidelity screens and a click-through mockup.</p>
+  <p>The kiosk app shows real QR codes: scan one with your phone camera and the route opens in your phone’s browser. There is no GPS, no backend and no route calculation, and every route is an illustrative placeholder.</p>
+  <nav class="nav">
+    <a href="#flow-sec">User flow</a>
+    <a href="#wireframes">Low-fi wireframes</a>
+    <a href="#hifi">High-fi screens</a>
+    <a href="#clickthrough">Click-through</a>
+    <a href="#notes">Accessibility & placeholders</a>
+    <a class="nav-live" href="kiosk.html">Open the live kiosk app →</a>
+    <a class="nav-live" href="route.html">Open the phone route →</a>
+  </nav>
+</header>
+
+<p class="disclaimer"><strong>Placeholder routes:</strong> <span>All maps, directions, distances and times here are illustrative placeholders. No verified SRH campus floor plan or route information was available. Do not use them as real campus directions.</span></p>
+
+<section class="block" id="flow-sec">
+  <h2>User <em>flow</em></h2>
+  <p class="lede">The kiosk stands just outside the university entrance. Students choose one of four destinations, scan the QR code and follow the route on their phone one step at a time.</p>
+  <div class="flow" id="flow"></div>
+</section>
+
+<section class="block grid-paper wf" id="wireframes">
+  <h2>Low-fidelity <em>wireframes</em></h2>
+  <p class="lede">These wireframes show structure, content hierarchy, screen transitions and the QR handoff. The <b style="color:#2F6FED">blue hatched band</b> marks the intended seated-reach interaction zone on the kiosk, where every essential control sits. Numbered pins match the notes.</p>
+  <h3>Kiosk · 9:16 portrait · outside the main entrance</h3>
+  <div class="row" id="wf-kiosk"></div>
+  <h3>Phone browser · opens after scanning the QR code</h3>
+  <div class="row" id="wf-phone"></div>
+  <div style="margin-top:24px" id="wf-phone-notes"></div>
+</section>
+
+<section class="block dark" id="hifi">
+  <h2>High-fidelity <em>screens</em></h2>
+  <p class="lede">The same screens and labels as the wireframes, styled with an SRH-inspired visual direction: an orange accent (#F26A21), charcoal text, warm white backgrounds, stone panels and bold direction arrows.</p>
+  <div class="toolbar">
+    <label class="toggle"><input type="checkbox" id="reach-toggle"> Show seated-reach zone overlay</label>
+  </div>
+  <h3>Kiosk · welcome + a QR handoff screen for each destination</h3>
+  <div class="row gallery" id="hf-kiosk"></div>
+  <h3>Phone · route overview → steps 1–5 → arrival</h3>
+  <div class="toolbar">
+    <button class="chip-btn" data-hfdest="c102">Room C 1.02</button>
+    <button class="chip-btn" data-hfdest="b102">Room B 1.02</button>
+    <button class="chip-btn" data-hfdest="lib">Library</button>
+    <button class="chip-btn" data-hfdest="event">Event Space · 5th floor</button>
+  </div>
+  <div class="row gallery" id="hf-phone"></div>
+</section>
+
+<section class="block dark" id="clickthrough" style="border-top:1px solid #333">
+  <h2>Click-<em>through</em></h2>
+  <p class="lede">Tap a destination on the kiosk, then use “Simulate phone scan” to stand in for the camera. The buttons only switch between mockup screens. Nothing is tracked or calculated.</p>
+  <div class="demo" id="demo">
+    <div id="demo-kiosk"></div>
+    <div class="demo-ctrl">
+      <button class="sim" id="sim-scan">📱 Simulate phone scan →</button>
+      <p>Prototype control only. On a real kiosk, the student scans the QR code with their own phone camera.</p>
+      <button class="chip-btn" id="demo-reset">Reset</button>
+    </div>
+    <div id="demo-phone"></div>
+  </div>
+</section>
+
+<section class="block" id="notes">
+  <h2>Accessibility <em>&amp;</em> placeholders</h2>
+  <p class="lede">Design decisions and open items to check before this moves to build.</p>
+  <div class="cards">
+    <div class="note-card warn">
+      <h4>Must be validated on site</h4>
+      <p>The final kiosk mounting height and the reachable touch area must be checked on site with wheelchair users. The seated-reach zone shown here is a design intent (roughly the lower half of the screen), not a measured specification.</p>
+    </div>
+    <div class="note-card">
+      <h4>Kiosk reach & touch</h4>
+      <ul>
+        <li>All essential controls (the 4 destinations, Back, Help and EN/DE) sit in the lower seated-reach zone.</li>
+        <li>The title, illustration and map preview are placed higher because they are read-only.</li>
+        <li>Buttons are full width and 56–58 px tall with 10 px gaps. Every button has a text label, never an icon alone.</li>
+        <li>The QR code sits at mid-height so it can be scanned standing or seated.</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>Readability</h4>
+      <ul>
+        <li>Charcoal on warm white for body text. Charcoal text on orange buttons, for higher contrast than white on orange.</li>
+        <li>Large type: 46 px kiosk title, 21 px buttons, 30 px phone instructions.</li>
+        <li>One instruction per phone screen, written in plain language.</li>
+        <li>English is the default, with German available on the kiosk.</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h4>Placeholder content</h4>
+      <ul>
+        <li>Maps are schematic blocks and corridors, labelled “Illustrative route · not to scale”.</li>
+        <li>Step texts, times and distances are invented examples, including the lift and stair wording.</li>
+        <li>The QR codes are real: each opens <code>route.html#&lt;destination&gt;</code> in the phone’s browser. They are generated by <code>tools/make-qr.swift</code>.</li>
+        <li>All route content lives in <code>routes.js</code>, so it can be replaced once verified directions exist.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>Visual UX prototype · not a functional navigation app · SRH-inspired styling for design review.</footer>
+
+<script src="routes.js"></script>
+<script src="qr-codes.js"></script>
+<script src="screens.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

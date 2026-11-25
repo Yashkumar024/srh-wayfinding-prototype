@@ -557,3 +557,4 @@ section.block { scroll-margin-top: 72px; }
 .topbar .brand { min-width: 0; }
 .topbar .brand > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .topnav { flex: none; }
+@media (max-width: 860px) { .topnav a:not(.topnav-cta) { display: none; } .topbar { padding-left: 20px; padding-right: 20px; } }

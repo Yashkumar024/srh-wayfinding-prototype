@@ -540,12 +540,22 @@ section.block { scroll-margin-top: 72px; }
 .topnav a { white-space: nowrap; }
 @media (max-width: 620px) { .topnav a.topnav-cta { padding: 8px 14px; font-size: 14px; } .brand { gap: 8px; } }
 @media (max-width: 360px) { .brand span:last-child { font-size: 14px; } }
-/* Phones: wide design galleries scroll sideways inside their section instead of widening the page */
-@media (max-width: 620px) {
-  section.block .row, .demo { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 14px; scroll-snap-type: x proximity; }
-  section.block .row > *, .demo > * { flex: none; scroll-snap-align: start; }
-  .wf-pair { flex-wrap: nowrap; }
-  .notes { min-width: 260px; }
+/* Phones & small tablets: one centred column; screens are scaled to fit (see fitScreens in app.js) */
+@media (max-width: 700px) {
+  section.block .row, .demo { flex-direction: column; align-items: center; flex-wrap: nowrap; gap: 18px; }
+  .wf-pair { flex-direction: column; align-items: center; gap: 14px; width: 100%; }
+  .screen-col { align-items: center; max-width: 100%; }
+  .screen-col .caption { text-align: center; }
+  .notes { max-width: 420px; width: 100%; }
+  .connector { width: auto; flex-direction: row; gap: 10px; }
+  .connector svg { transform: rotate(90deg); width: 40px; height: 24px; }
+  .toolbar { justify-content: center; }
+  .demo-ctrl { max-width: 420px; width: 100%; align-items: stretch; text-align: center; }
+  #wf-phone-notes { display: flex; justify-content: center; }
+  .flow { flex-direction: column; align-items: center; gap: 8px; }
+  .flow-card { width: min(100%, 340px); }
+  .flow-card .thumb { height: 190px; }
+  .flow-arrow { transform: rotate(90deg); line-height: 1; }
   .block h2 { font-size: 38px; }
 }
 @media (max-width: 420px) {
@@ -558,3 +568,29 @@ section.block { scroll-margin-top: 72px; }
 .topbar .brand > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .topnav { flex: none; }
 @media (max-width: 860px) { .topnav a:not(.topnav-cta) { display: none; } .topbar { padding-left: 20px; padding-right: 20px; } }
+@media (max-width: 400px) { .topbar .brand-long { display: none; } .topbar .brand { font-size: 16px; } }
+/* Centre design galleries and the flow at every width */
+section.block .row, .flow, .demo { justify-content: center; }
+section.block .row .caption { text-align: center; }
+/* User flow: tidy grid above phone size (step numbers show the order), column with down-arrows on phones */
+@media (min-width: 701px) {
+  .flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+  .flow .flow-arrow { display: none; }
+  .flow-card { width: auto; }
+}
+@media (min-width: 1200px) {
+  .flow { grid-template-columns: repeat(6, minmax(0, 1fr)); max-width: none; }
+}
+/* Wireframe rows: notes under each screen; no dangling connectors when rows wrap */
+.wf-pair { flex-direction: column; align-items: center; gap: 14px; }
+.wf-pair .notes { max-width: 482px; width: 100%; }
+@media (min-width: 701px) {
+  #wf-phone { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); justify-items: center; gap: 32px 20px; }
+  #wf-phone .connector { display: none; }
+  #wf-kiosk { align-items: center; }
+}
+@media (min-width: 701px) and (max-width: 1199px) {
+  #wf-kiosk { flex-direction: column; }
+  #wf-kiosk .connector { flex-direction: row; gap: 10px; width: auto; }
+  #wf-kiosk .connector svg { transform: rotate(90deg); width: 40px; }
+}

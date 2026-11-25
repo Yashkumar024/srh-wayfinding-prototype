@@ -69,7 +69,7 @@
       <div style="position:relative;border:1.5px solid #9a9a9a;border-radius:6px;overflow:hidden">${mapSVG("c102", { wf: true })}</div>
       <div style="display:flex;gap:8px">${["~4 min*", "~180 m*", "5 steps"].map((x) => `<div class="wfbox" style="flex:1;height:52px">${x}</div>`).join("")}</div>
       <div style="font-size:11px;color:#555">* placeholder estimates</div>
-      ${pin(9, -8, 0)}${pin(10, -8, 100)}`,
+      ${pin(9, 4, 0)}${pin(10, 4, 100)}`,
       `<div class="wfbtn fill" style="flex:1;height:56px;justify-content:center">Start directions →</div>`);
   }
   function wfStep(i, dir, text) {
@@ -77,13 +77,13 @@
       <div class="wfbox" style="height:250px;background:#d4d4d4;color:#222">${dirSVG(dir, "wfarrow").replace("<svg", '<svg style="width:150px;height:150px"')}</div>
       <div class="wftext" style="font-size:26px;line-height:1.15">${text}</div>
       <div class="wfline" style="width:80%"></div>
-      ${i === 1 ? pin(11, -8, 0) + pin(12, -8, 70) + pin(13, -8, 330) : ""}`,
+      ${i === 1 ? pin(11, 4, 0) + pin(12, 4, 70) + pin(13, 4, 330) : ""}`,
       `<div class="wfbtn" style="width:90px;height:56px;justify-content:center">←</div><div class="wfbtn fill" style="flex:1;height:56px;justify-content:center">${i === 5 ? "I’ve arrived" : "Next step"} →</div>`);
   }
   function wfArrival() {
     return wfPhone(`${wfProgress(5, 5)}
       <div class="wfbox" style="height:300px;flex-direction:column;gap:12px;background:#d4d4d4;color:#222"><div style="width:64px;height:64px;border:3px solid #222;border-radius:50%;display:grid;place-items:center;font-size:30px">✓</div><div class="wftext" style="font-size:32px">You’ve arrived</div><div style="font-size:22px;font-weight:700">Room C 1.02</div></div>
-      ${pin(14, -8, 70)}`,
+      ${pin(14, 4, 70)}`,
       `<div class="wfbtn" style="flex:1;height:56px;justify-content:center;font-size:15px">Back to destinations</div><div class="wfbtn fill" style="flex:1;height:56px;justify-content:center">Done</div>`);
   }
 
@@ -109,7 +109,7 @@
     </svg>`;
   }
   function mini(html, w, scale) {
-    return `<div class="mini" style="transform:scale(${scale});width:${w}px;left:${(160 - w * scale) / 2}px;top:3px">${html}</div>`;
+    return `<div class="mini" style="transform:scale(${scale});width:${w}px;left:50%;margin-left:${-(w * scale) / 2}px;top:8px">${html}</div>`;
   }
   function buildFlow() {
     const steps = [
@@ -160,9 +160,23 @@
       col(phoneFrame(phoneOverview(hfDest)), "<b>M1 · Route overview</b>") +
       r.steps.map((_, i) => col(phoneFrame(phoneStep(hfDest, i)), `<b>M2 · Step ${i + 1} of ${r.steps.length}</b>`)).join("") +
       col(phoneFrame(phoneArrival(hfDest)), "<b>M3 · Arrival</b>");
+    fitScreens();
     document.querySelectorAll("[data-hfdest]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.hfdest === hfDest));
   }
 
+
+
+  /* Scale design screens down (not crop) when the section is narrower than the screen */
+  function fitScreens() {
+    document.querySelectorAll("section.block .kiosk-device, section.block .phone-device").forEach((el) => {
+      el.style.zoom = "";
+      const host = el.closest("section.block");
+      const cs = getComputedStyle(host);
+      const avail = host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const z = Math.min(1, avail / el.offsetWidth);
+      if (z < 1) el.style.zoom = z.toFixed(3);
+    });
+  }
 
   /* ---------- Home: hero visual + "try it" QR ---------- */
   const HERO_W = 600, HERO_H = 660;
@@ -196,6 +210,7 @@
     else ph = phoneArrival(st.dest);
     $("#demo-phone").innerHTML = phoneFrame(ph);
     $("#sim-scan").disabled = st.k !== "qr";
+    fitScreens();
   }
   function onDemo(e) {
     const b = e.target.closest("[data-act]");
@@ -225,5 +240,7 @@
     $("#demo-reset").addEventListener("click", () => { Object.assign(st, { k: "welcome", dest: null, help: false, p: "waiting", step: 0 }); renderDemo(); });
     document.querySelectorAll("[data-hfdest]").forEach((b) => b.addEventListener("click", () => { hfDest = b.dataset.hfdest; renderHifiPhone(); }));
     $("#reach-toggle").addEventListener("change", (e) => $("#hifi").classList.toggle("show-reach", e.target.checked));
+    fitScreens();
+    window.addEventListener("resize", fitScreens);
   });
 })();

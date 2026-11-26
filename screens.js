@@ -54,6 +54,7 @@ window.WFS = (function () {
     pin: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s-7-7.4-7-12.5a7 7 0 0 1 14 0C19 14.6 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.6" fill="#1F1D1B"/></svg>',
     check: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"><path d="M4 12.5l5 5L20 6.5"/></svg>',
     lock: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10V7a5 5 0 0 1 10 0v3h1v12H6V10zm2 0h6V7a3 3 0 0 0-6 0z"/></svg>',
+    service: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 11V8M10 8h4"/></svg>',
     lift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="2"/><path d="M12 2.5v19"/><path d="M6.5 9.5 8.5 7l2 2.5M13.5 14.5l2 2.5 2-2.5" stroke-linecap="round"/></svg>',
     stairs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M3 20h5v-5h5v-5h5V5h3"/></svg>',
     camera: '<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg>',
@@ -242,7 +243,7 @@ window.WFS = (function () {
     const d = byId(destId), r = R[destId], sf = r.stepFree;
     return phoneChrome(destId, `
       <h1>Do you need a <span class="accent">step-free route?</span></h1>
-      <p class="choice-lede">The quickest way to ${d.name} uses stairs. Choose how you would like to go.</p>
+      <p class="choice-lede">One way to ${d.name} uses stairs. Choose how you would like to go.</p>
       <div class="choice-list">
         <button class="choice-btn" data-act="mode" data-v="lift">
           <span class="ic">${icon.lift}</span>
@@ -253,7 +254,7 @@ window.WFS = (function () {
           <span class="lbl"><b>No, stairs are fine</b><small>Route with stairs · ${r.time}</small></span>
           <span class="go">${icon.arrowR}</span></button>
       </div>
-      <p class="placeholder-note">Step-free is best for wheelchairs, prams, heavy luggage, or if you prefer not to climb stairs. Times are placeholder estimates.</p>`);
+      <p class="placeholder-note">Step-free is best for wheelchairs, prams, heavy luggage, or if you prefer not to climb stairs.${r.real ? "" : " Times are placeholder estimates."}</p>`);
   }
 
   function phoneOverview(destId, mode) {
@@ -268,13 +269,13 @@ window.WFS = (function () {
         <div class="stat"><b>${r.dist}</b><span>distance</span></div>
         <div class="stat"><b>${r.steps.length}</b><span>steps</span></div>
       </div>
-      <div class="placeholder-note">Time and distance are placeholder estimates.</div>`,
+      <div class="placeholder-note">${r.real ? `Real route with photos. ${r.credit} Map is schematic.` : "Time and distance are placeholder estimates."}</div>`,
       `<button class="p-btn primary" data-act="start">Start directions ${icon.arrowR}</button>`);
   }
 
-  function progressHTML(i, n) {
+  function progressHTML(i, n, realRoute = false) {
     return `<div class="progress" role="progressbar" aria-valuemin="1" aria-valuemax="${n}" aria-valuenow="${i + 1}">
-      <div class="top"><span class="count">Step ${i + 1} <small>of ${n}</small></span><span class="illus-tag">Placeholder route</span></div>
+      <div class="top"><span class="count">Step ${i + 1} <small>of ${n}</small></span>${realRoute ? '<span class="real-tag">Walked route</span>' : '<span class="illus-tag">Placeholder route</span>'}</div>
       <div class="bar">${Array.from({ length: n }, (_, k) => `<i class="${k < i ? "done" : k === i ? "now" : ""}"></i>`).join("")}</div>
     </div>`;
   }
@@ -295,19 +296,19 @@ window.WFS = (function () {
     return `<div class="view-switch" role="group" aria-label="Step view">${b("photos", "Photos")}${b("text", "Text")}</div>`;
   }
   function stepVisual(s, i) {
-    const arrow = `<div class="arrow-card"><span class="stepno">0${i + 1}</span>${dirSVG(s.dir)}</div>`;
+    const arrow = `<div class="arrow-card"><span class="stepno">${String(i + 1).padStart(2, "0")}</span>${dirSVG(s.dir)}</div>`;
     if (!s.photo || stepView !== "photos") return arrow;
     // If the photo file is missing, fall back to the arrow card.
     return `<figure class="photo-card" data-fallback="${esc(arrow)}">
       <img src="${esc(s.photo)}" alt="${esc(s.photoAlt || "")}" onerror="const f=this.parentNode;f.outerHTML=f.dataset.fallback">
-      <span class="photo-dir" aria-hidden="true">${dirSVG(s.dir, "small")}</span><span class="stepno">0${i + 1}</span></figure>`;
+      <span class="photo-dir" aria-hidden="true">${dirSVG(s.dir, "small")}</span><span class="stepno">${String(i + 1).padStart(2, "0")}</span></figure>`;
   }
 
   function phoneStep(destId, i, mode) {
     const r = routeOf(destId, mode), s = r.steps[i], n = r.steps.length;
     const next = r.steps[i + 1];
     return phoneChrome(destId, `
-      ${progressHTML(i, n)}
+      ${progressHTML(i, n, r.real)}
       ${viewSwitch(r)}
       ${stepVisual(s, i)}
       <p class="instruction">${s.text}</p>
@@ -323,7 +324,7 @@ window.WFS = (function () {
         <div class="bar">${Array.from({ length: n }, () => '<i class="done"></i>').join("")}</div></div>
       <div class="arrive-hero"><div class="check">${icon.check}</div>
         <h1>You’ve arrived</h1><div class="dname">${d.name}</div>
-        <p>This route is an illustrative placeholder. Final wording will use verified campus directions.</p></div>`,
+        <p>${R[destId].real ? R[destId].credit : "This route is an illustrative placeholder. Final wording will use verified campus directions."}</p></div>`,
       `<button class="p-btn ghost wide" data-act="done">Back to destinations</button>
        <button class="p-btn primary" data-act="done">Done</button>`);
   }

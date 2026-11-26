@@ -5,7 +5,7 @@ import Foundation
 import CoreImage
 
 let base = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "https://yashkumar024.github.io/srh-wayfinding-prototype/route.html"
-let ids = ["c102", "b102", "lib", "event"]
+let ids = ["c102", "b102", "lib", "event", "service"]
 let ctx = CIContext()
 
 func matrix(for text: String) -> [String] {

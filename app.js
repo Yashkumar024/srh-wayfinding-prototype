@@ -20,7 +20,7 @@
       <div style="height:390px;padding:14px 22px 16px;display:flex;flex-direction:column;position:relative">
         <div class="wftext" style="font-size:22px;margin-bottom:10px">Where would you like to go?</div>
         <div style="display:flex;flex-direction:column;gap:10px">
-          ${D.map((d) => `<div class="wfbtn fill" style="height:56px">${d.name}<span style="margin-left:auto">→</span></div>`).join("")}
+          ${D.map((d) => `<div class="wfbtn fill" style="height:48px">${d.name}<span style="margin-left:auto">→</span></div>`).join("")}
         </div>
         ${wfBottom}
         ${pin(3, 2, 58)}${pin(4, 2, 334)}
@@ -114,7 +114,7 @@
   function buildFlow() {
     const steps = [
       ["01", "Arrive at the entrance", "A portrait kiosk stands just outside the main university entrance.", `<div style="display:grid;place-items:center;height:100%">${facadeSVG().replace('width="190"', 'width="150"')}</div>`],
-      ["02", "Choose a destination", "Four large text buttons, all in the seated-reach zone.", mini(kioskWelcome(), 450, 0.19)],
+      ["02", "Choose a destination", "Five large text buttons, all in the seated-reach zone.", mini(kioskWelcome(), 450, 0.19)],
       ["03", "Scan the QR code", "The kiosk shows the route preview and a QR code for the phone.", mini(kioskQR("c102"), 450, 0.19)],
       ["04", "Route opens in the browser", "No app download. The overview shows the illustrative route.", mini(phoneOverview("c102"), 375, 0.21)],
       ["05", "Follow one step at a time", "A big arrow, large text and a progress bar that fills step by step.", mini(phoneStep("c102", 1), 375, 0.21)],
@@ -130,7 +130,7 @@
       `<div class="wf-pair">${col(kioskFrame(wfKioskWelcome(), true), "<b>K1 · Welcome & destination choice</b>")}
         ${notes([[1, "Title and campus name sit high on the screen: read-only, no touch needed."], [2, "Illustration area is decorative and non-interactive."], [3, "Every button is in the blue seated-reach zone: full-width, 56 px tall, text labels, 10 px gaps."], [4, "Help (Reception) and EN / DE are also in the reach zone."]])}</div>
        ${conn("Tap destination")}
-       <div class="wf-pair">${col(kioskFrame(wfKioskQR(), true), "<b>K2 · Destination selected & QR handoff</b><br>One template, repeated for all 4 destinations")}
+       <div class="wf-pair">${col(kioskFrame(wfKioskQR(), true), "<b>K2 · Destination selected & QR handoff</b><br>One template, repeated for all 5 destinations")}
         ${notes([[5, "The selected destination is the largest text on screen."], [6, "Schematic map preview, labelled as illustrative and placed high."], [7, "Large QR code with a plain instruction that it opens the route on the phone."], [8, "Back to destinations, Help and language controls stay in the reach zone."]])}</div>`;
     $("#wf-phone").innerHTML =
       `${conn("Scan QR with phone camera", true)}

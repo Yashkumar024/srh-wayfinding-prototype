@@ -11,7 +11,15 @@
  *   - time / dist   estimates shown on the route overview
  *   - map.path      schematic map points in a 300 × 200 grid
  *                   (entrance is at 150,192; corridors at x=150, y=55, y=110)
+ *   - stepFree      only for routes whose main version uses stairs. The phone
+ *                   asks first whether the student needs a step-free route
+ *                   (lift) or is fine with the stairs. Same fields as above.
+ *
+ * Floors 2 and 3 of the building are not used by the university
+ * (see NOT_SRH_FLOORS); they are shown greyed out.
  */
+window.NOT_SRH_FLOORS = ["2", "3"];
+
 window.DESTINATIONS = [
   { id: "c102",  name: "Room C 1.02",             de: "Raum C 1.02",                 icon: "room"  },
   { id: "b102",  name: "Room B 1.02",             de: "Raum B 1.02",                 icon: "room"  },
@@ -36,11 +44,22 @@ window.ROUTES = {
     map: { path: [[150, 192], [150, 55], [55, 55]], floor: "1" },
     steps: [
       { dir: "straight", text: "Walk straight ahead into the foyer." },
-      { dir: "up",       text: "Go up one floor to level 1." },
+      { dir: "up",       text: "Take the stairs up one floor to level 1." },
       { dir: "left",     text: "Turn left at the corridor." },
       { dir: "right",    text: "Turn right at the door marked “B”." },
       { dir: "door",     text: "Go through the door to Room B 1.02." },
     ],
+    stepFree: {
+      time: "~4 min", dist: "~160 m",
+      steps: [
+        { dir: "straight", text: "Walk straight ahead into the foyer." },
+        { dir: "right",    text: "Turn right to the lifts." },
+        { dir: "lift",     text: "Take the lift up to level 1." },
+        { dir: "left",     text: "Leave the lift and turn left at the corridor." },
+        { dir: "right",    text: "Turn right at the door marked “B”." },
+        { dir: "door",     text: "Go through the door to Room B 1.02." },
+      ],
+    },
   },
   lib: {
     time: "~2 min", dist: "~90 m",
@@ -54,14 +73,25 @@ window.ROUTES = {
     ],
   },
   event: {
-    time: "~5 min", dist: "~120 m",
+    time: "~6 min", dist: "~120 m",
     map: { path: [[150, 192], [150, 55], [255, 55]], floor: "5" },
     steps: [
       { dir: "straight", text: "Walk straight ahead into the foyer." },
-      { dir: "up",       text: "Go up to the 5th floor." },
+      { dir: "up",       text: "Take the stairs up to the 5th floor." },
       { dir: "left",     text: "Turn left at the corridor." },
       { dir: "straight", text: "Continue to the end of the corridor." },
       { dir: "door",     text: "Go through the door to the Event Space." },
     ],
+    stepFree: {
+      time: "~5 min", dist: "~140 m",
+      steps: [
+        { dir: "straight", text: "Walk straight ahead into the foyer." },
+        { dir: "right",    text: "Turn right to the lifts." },
+        { dir: "lift",     text: "Take the lift up to the 5th floor." },
+        { dir: "left",     text: "Leave the lift and turn left at the corridor." },
+        { dir: "straight", text: "Continue to the end of the corridor." },
+        { dir: "door",     text: "Go through the door to the Event Space." },
+      ],
+    },
   },
 };

@@ -9,7 +9,7 @@ A wayfinding prototype for the SRH University Berlin entrance. A portrait touchs
 | Page | What it is |
 |---|---|
 | [`kiosk.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/kiosk.html) | Full-screen 9:16 kiosk app. Destination buttons in the seated-reach zone, EN/DE, help, and a **real QR code** for each destination. Resets to the welcome screen after 60 seconds without a touch. |
-| [`route.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/route.html) | Phone route opened by the QR code (`route.html#c102`, `#b102`, `#lib`, `#event`). Route overview, one step at a time with a progress bar, then arrival. The browser Back button works. |
+| [`route.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/route.html) | Phone route opened by the QR code (`route.html#c102`, `#b102`, `#lib`, `#event`). Route overview, one step at a time with a progress bar, then arrival. Routes that use stairs (Room B 1.02, Event Space) first ask whether you need a **step-free route** with the lift (`#b102/lift`) or are fine with stairs (`#b102/stairs`). The browser Back button works. |
 | [`index.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/) | Design review page: user flow, low-fi wireframes, hi-fi screens, click-through, and accessibility notes. |
 
 ## Try it
@@ -32,7 +32,7 @@ Then open http://localhost:4321. The QR codes always point to the live site, bec
 
 | File | Purpose |
 |---|---|
-| `routes.js` | **All route content**: destinations, steps, times, distances and map paths. Placeholders; replace these with verified directions. |
+| `routes.js` | **All route content**: destinations, steps, times, distances, map paths, step-free (lift) alternatives, and the floors not used by the university (`NOT_SRH_FLOORS`, shown greyed out). Placeholders; replace these with verified directions. |
 | `qr-codes.js` | Real QR codes for the four route URLs (generated, don't edit by hand) |
 | `screens.js` | Shared screen renderers used by all three pages |
 | `kiosk.js`, `route.js`, `app.js` | Page logic for the kiosk, the phone route and the review page |

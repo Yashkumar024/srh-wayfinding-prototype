@@ -15,6 +15,7 @@ window.WFS = (function () {
       scan: "Scan with your phone camera to open this route.",
       noApp: "No app needed. The route opens in your phone’s web browser.",
       phoneNote: "Step-by-step directions will appear on your phone.",
+      stepFree: "This route has stairs. Your phone will offer a step-free route with the lift.",
       back: "Back to destinations",
       here: "You are here: outside the main entrance",
       entrance: "Main entrance",
@@ -31,6 +32,7 @@ window.WFS = (function () {
       scan: "Mit der Handykamera scannen, um diese Route zu öffnen.",
       noApp: "Keine App nötig. Die Route öffnet sich im Browser Ihres Handys.",
       phoneNote: "Die Wegbeschreibung erscheint Schritt für Schritt auf Ihrem Handy.",
+      stepFree: "Diese Route hat Treppen. Ihr Handy bietet eine stufenlose Route mit dem Aufzug an.",
       back: "Zurück zur Zielauswahl",
       here: "Sie sind hier: vor dem Haupteingang",
       entrance: "Haupteingang",
@@ -52,6 +54,8 @@ window.WFS = (function () {
     pin: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s-7-7.4-7-12.5a7 7 0 0 1 14 0C19 14.6 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.6" fill="#1F1D1B"/></svg>',
     check: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"><path d="M4 12.5l5 5L20 6.5"/></svg>',
     lock: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10V7a5 5 0 0 1 10 0v3h1v12H6V10zm2 0h6V7a3 3 0 0 0-6 0z"/></svg>',
+    lift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="2"/><path d="M12 2.5v19"/><path d="M6.5 9.5 8.5 7l2 2.5M13.5 14.5l2 2.5 2-2.5" stroke-linecap="round"/></svg>',
+    stairs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M3 20h5v-5h5v-5h5V5h3"/></svg>',
     camera: '<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg>',
   };
 
@@ -64,6 +68,7 @@ window.WFS = (function () {
       left: `<path ${s} d="M70 92 V50 H24"/><path ${s} d="M44 26 L20 50 L44 74"/>`,
       door: `<path fill="none" stroke="currentColor" stroke-width="7" d="M22 94 V8 H78 V94"/><path ${s} stroke-width="11" d="M50 84 V36"/><path ${s} stroke-width="11" d="M32 54 L50 34 L68 54"/>`,
       up: `<path ${s} stroke-width="9" d="M8 92 H28 V72 H48 V52 H68 V32 H92"/><path ${s} stroke-width="10" d="M30 40 V8"/><path ${s} stroke-width="10" d="M16 22 L30 8 L44 22"/>`,
+      lift: `<rect fill="none" stroke="currentColor" stroke-width="7" x="14" y="6" width="72" height="88" rx="6"/><path fill="none" stroke="currentColor" stroke-width="5" d="M50 6 V94"/><path fill="currentColor" d="M32 30 L44 46 H20 Z M68 70 L56 54 H80 Z"/>`,
       arrive: `<path fill="currentColor" d="M50 96 S20 62 20 40 a30 30 0 0 1 60 0 c0 22-30 56-30 56z"/><circle cx="50" cy="40" r="11" fill="#F26A21"/>`,
     }[dir];
     return `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true">${p}</svg>`;
@@ -97,21 +102,26 @@ window.WFS = (function () {
   }
 
   /* Stacked floors illustration (inspired by the mood board kiosk) */
-  function floorsSVG(highlight) {
+  // Floors listed in NOT_SRH_FLOORS (routes.js) are not used by the university and are greyed out.
+  const NOT_SRH = window.NOT_SRH_FLOORS || [];
+  function floorsSVG(highlight, { note = false } = {}) {
     const labels = ["G", "1", "2", "3", "4", "5"];
     let g = "";
     labels.forEach((lab, i) => {
       const y = 200 - i * 30;
       const hl = highlight === lab;
-      const top = hl ? "#1F1D1B" : i % 2 ? "#F58A4F" : "#F26A21";
-      const side = hl ? "#000" : "#C9501A";
-      const side2 = hl ? "#2b2b2b" : "#E0601E";
+      const off = NOT_SRH.includes(lab);
+      const top = hl ? "#1F1D1B" : off ? "#DCD7D0" : i % 2 ? "#F58A4F" : "#F26A21";
+      const side = hl ? "#000" : off ? "#B9B3AB" : "#C9501A";
+      const side2 = hl ? "#2b2b2b" : off ? "#C8C2BA" : "#E0601E";
       g += `<polygon points="10,${y} 120,${y - 42} 230,${y} 120,${y + 42}" fill="${top}"/>
             <polygon points="10,${y} 120,${y + 42} 120,${y + 50} 10,${y + 8}" fill="${side}"/>
             <polygon points="230,${y} 120,${y + 42} 120,${y + 50} 230,${y + 8}" fill="${side2}"/>
-            <text x="244" y="${y + 6}" font-size="13" font-weight="800" font-family="Inter, Arial" fill="#1F1D1B">${lab}</text>`;
+            <text x="244" y="${y + 6}" font-size="${note ? 20 : 13}" font-weight="800" font-family="Inter, Arial" fill="${off ? "#8A847C" : "#1F1D1B"}">${lab}</text>
+            ${note && off ? `<text x="266" y="${y + 6}" font-size="17" font-weight="700" font-family="Inter, Arial" fill="#6B645D">not SRH</text>` : ""}`;
     });
-    return `<svg class="floors" viewBox="0 0 260 260" aria-hidden="true">${g}</svg>`;
+    const label = `Building floors G to 5${NOT_SRH.length ? `. Floors ${NOT_SRH.join(" and ")} are not part of the university` : ""}`;
+    return `<svg class="floors" viewBox="0 0 ${note ? 345 : 260} 260" role="img" aria-label="${label}">${g}</svg>`;
   }
 
   /* Real QR code (from qr-codes.js, generated by tools/make-qr.swift) with a 4-module quiet zone */
@@ -184,7 +194,7 @@ window.WFS = (function () {
           <div class="qr-box">${qrSVG(destId)}</div>
           <div class="qr-text"><div class="scan-ic">${icon.phone}</div><b>${t.scan}</b><p>${t.noApp}</p></div>
         </div>
-        <p class="phone-note">${t.phoneNote}</p>
+        <p class="phone-note">${needsChoice(destId) ? `<span class="sf-note">${icon.lift}${t.stepFree}</span>` : t.phoneNote}</p>
         <button class="back-btn" data-act="back">${icon.arrowL}${t.back}</button>
         ${kioskBottom(lang)}
         ${help ? helpSheet(lang) : ""}
@@ -214,11 +224,44 @@ window.WFS = (function () {
       <b>Scan the kiosk QR code</b><span>Open your phone camera and point it at the QR code on the kiosk screen.</span></div>`);
   }
 
-  function phoneOverview(destId) {
-    const d = byId(destId), r = R[destId];
+  /* Routes with stairs have a step-free (lift) version; the phone asks which one first. */
+  const needsChoice = (destId) => !!(R[destId] && R[destId].stepFree);
+  function routeOf(destId, mode) {
+    const r = R[destId];
+    return mode === "lift" && r.stepFree ? Object.assign({}, r, r.stepFree) : r;
+  }
+  function modeBadge(destId, mode) {
+    if (!needsChoice(destId)) return "";
+    const lift = mode === "lift";
+    return `<div class="mode-badge ${lift ? "lift" : "stairs"}"><span class="ic">${lift ? icon.lift : icon.stairs}</span>
+      <span>${lift ? "<b>Step-free route</b> · uses the lift" : "<b>Route with stairs</b>"}</span>
+      <button class="mode-change" data-act="choose">Change</button></div>`;
+  }
+
+  function phoneAccessChoice(destId) {
+    const d = byId(destId), r = R[destId], sf = r.stepFree;
+    return phoneChrome(destId, `
+      <h1>Do you need a <span class="accent">step-free route?</span></h1>
+      <p class="choice-lede">The quickest way to ${d.name} uses stairs. Choose how you would like to go.</p>
+      <div class="choice-list">
+        <button class="choice-btn" data-act="mode" data-v="lift">
+          <span class="ic">${icon.lift}</span>
+          <span class="lbl"><b>Yes, step-free</b><small>Uses the lift, no stairs · ${sf.time}</small></span>
+          <span class="go">${icon.arrowR}</span></button>
+        <button class="choice-btn" data-act="mode" data-v="stairs">
+          <span class="ic">${icon.stairs}</span>
+          <span class="lbl"><b>No, stairs are fine</b><small>Route with stairs · ${r.time}</small></span>
+          <span class="go">${icon.arrowR}</span></button>
+      </div>
+      <p class="placeholder-note">Step-free is best for wheelchairs, prams, heavy luggage, or if you prefer not to climb stairs. Times are placeholder estimates.</p>`);
+  }
+
+  function phoneOverview(destId, mode) {
+    const d = byId(destId), r = routeOf(destId, mode);
     return phoneChrome(destId, `
       <h1>Route to <span class="accent">${d.name}</span></h1>
       <div class="start-row"><span class="dot"></span>You are at the university entrance</div>
+      ${modeBadge(destId, mode)}
       <div class="map-wrap">${mapSVG(destId)}<span class="illus-tag">Illustrative route · not to scale</span></div>
       <div class="stats">
         <div class="stat"><b>${r.time}</b><span>walk</span></div>
@@ -236,8 +279,8 @@ window.WFS = (function () {
     </div>`;
   }
 
-  function phoneStep(destId, i) {
-    const r = R[destId], s = r.steps[i], n = r.steps.length;
+  function phoneStep(destId, i, mode) {
+    const r = routeOf(destId, mode), s = r.steps[i], n = r.steps.length;
     const next = r.steps[i + 1];
     return phoneChrome(destId, `
       ${progressHTML(i, n)}
@@ -248,8 +291,8 @@ window.WFS = (function () {
        <button class="p-btn primary" data-act="next">${i === n - 1 ? "I’ve arrived" : "Next step"} ${icon.arrowR}</button>`);
   }
 
-  function phoneArrival(destId) {
-    const d = byId(destId), n = R[destId].steps.length;
+  function phoneArrival(destId, mode) {
+    const d = byId(destId), n = routeOf(destId, mode).steps.length;
     return phoneChrome(destId, `
       <div class="progress"><div class="top"><span class="count">Step ${n} <small>of ${n} · complete</small></span></div>
         <div class="bar">${Array.from({ length: n }, () => '<i class="done"></i>').join("")}</div></div>
@@ -260,6 +303,6 @@ window.WFS = (function () {
        <button class="p-btn primary" data-act="done">Done</button>`);
   }
 
-  return { setReal, routeUrl, D, R, T, byId, icon, dirSVG, mapSVG, floorsSVG, qrSVG, wordmark, reachOverlay,
+  return { setReal, routeUrl, D, R, T, byId, icon, dirSVG, mapSVG, floorsSVG, qrSVG, needsChoice, routeOf, phoneAccessChoice, wordmark, reachOverlay,
     kioskWelcome, kioskQR, phoneChrome, phoneWaiting, phoneOverview, phoneStep, phoneArrival, progressHTML };
 })();

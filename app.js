@@ -1,6 +1,6 @@
 /* Visual prototype renderer. No GPS, no QR scanning, no routing — screens only. */
 (function () {
-  const { D, R, byId, icon, dirSVG, mapSVG, kioskWelcome, kioskQR, phoneWaiting, phoneOverview, phoneStep, phoneArrival, reachOverlay, qrSVG } = window.WFS;
+  const { D, R, byId, icon, dirSVG, mapSVG, kioskWelcome, kioskQR, phoneWaiting, phoneOverview, phoneStep, phoneArrival, reachOverlay, qrSVG, needsChoice, routeOf, phoneAccessChoice } = window.WFS;
   const $ = (s, el = document) => el.querySelector(s);
 
   /* ---------- Wireframes ---------- */
@@ -147,7 +147,7 @@
   }
 
   /* ---------- Build: hi-fi gallery ---------- */
-  let hfDest = "c102";
+  let hfDest = "c102", hfMode = "lift";
   function buildHifi() {
     $("#hf-kiosk").innerHTML =
       col(kioskFrame(kioskWelcome({ pressed: null })), "<b>K1 · Welcome & destination choice</b>") +
@@ -155,11 +155,19 @@
     renderHifiPhone();
   }
   function renderHifiPhone() {
-    const r = R[hfDest];
+    const choice = needsChoice(hfDest);
+    const mode = choice ? hfMode : null;
+    const r = routeOf(hfDest, mode);
+    const modeBar = $("#hf-mode");
+    if (modeBar) {
+      modeBar.hidden = !choice;
+      modeBar.querySelectorAll("[data-hfmode]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.hfmode === hfMode));
+    }
     $("#hf-phone").innerHTML =
-      col(phoneFrame(phoneOverview(hfDest)), "<b>M1 · Route overview</b>") +
-      r.steps.map((_, i) => col(phoneFrame(phoneStep(hfDest, i)), `<b>M2 · Step ${i + 1} of ${r.steps.length}</b>`)).join("") +
-      col(phoneFrame(phoneArrival(hfDest)), "<b>M3 · Arrival</b>");
+      (choice ? col(phoneFrame(phoneAccessChoice(hfDest)), "<b>M0 · Step-free or stairs?</b><br>Only for routes with stairs") : "") +
+      col(phoneFrame(phoneOverview(hfDest, mode)), "<b>M1 · Route overview</b>") +
+      r.steps.map((_, i) => col(phoneFrame(phoneStep(hfDest, i, mode)), `<b>M2 · Step ${i + 1} of ${r.steps.length}</b>`)).join("") +
+      col(phoneFrame(phoneArrival(hfDest, mode)), "<b>M3 · Arrival</b>");
     fitScreens();
     document.querySelectorAll("[data-hfdest]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.hfdest === hfDest));
   }
@@ -200,14 +208,15 @@
   }
 
   /* ---------- Click-through demo (mock state only) ---------- */
-  const st = { k: "welcome", dest: null, lang: "en", help: false, p: "waiting", step: 0 };
+  const st = { k: "welcome", dest: null, lang: "en", help: false, p: "waiting", step: 0, mode: null };
   function renderDemo() {
     $("#demo-kiosk").innerHTML = kioskFrame(st.k === "welcome" ? kioskWelcome({ lang: st.lang, help: st.help }) : kioskQR(st.dest, { lang: st.lang, help: st.help }));
     let ph;
     if (st.p === "waiting") ph = phoneWaiting();
-    else if (st.p === "overview") ph = phoneOverview(st.dest);
-    else if (st.p === "step") ph = phoneStep(st.dest, st.step);
-    else ph = phoneArrival(st.dest);
+    else if (st.p === "choice") ph = phoneAccessChoice(st.dest);
+    else if (st.p === "overview") ph = phoneOverview(st.dest, st.mode);
+    else if (st.p === "step") ph = phoneStep(st.dest, st.step, st.mode);
+    else ph = phoneArrival(st.dest, st.mode);
     $("#demo-phone").innerHTML = phoneFrame(ph);
     $("#sim-scan").disabled = st.k !== "qr";
     fitScreens();
@@ -221,8 +230,10 @@
     else if (a === "lang") { st.lang = v; }
     else if (a === "help") { st.help = true; }
     else if (a === "closehelp") { st.help = false; }
+    else if (a === "mode") { st.mode = v; st.p = "overview"; }
+    else if (a === "choose") { st.p = "choice"; }
     else if (a === "start") { st.p = "step"; st.step = 0; }
-    else if (a === "next") { const n = R[st.dest].steps.length; if (st.step < n - 1) st.step++; else st.p = "arrived"; }
+    else if (a === "next") { const n = routeOf(st.dest, st.mode).steps.length; if (st.step < n - 1) st.step++; else st.p = "arrived"; }
     else if (a === "prev") { if (st.step > 0) st.step--; else st.p = "overview"; }
     else if (a === "done") { st.p = "waiting"; st.k = "welcome"; st.dest = null; }
     renderDemo();
@@ -236,9 +247,10 @@
     buildHifi();
     renderDemo();
     $("#demo").addEventListener("click", onDemo);
-    $("#sim-scan").addEventListener("click", () => { if (st.k === "qr") { st.p = "overview"; renderDemo(); } });
-    $("#demo-reset").addEventListener("click", () => { Object.assign(st, { k: "welcome", dest: null, help: false, p: "waiting", step: 0 }); renderDemo(); });
+    $("#sim-scan").addEventListener("click", () => { if (st.k === "qr") { st.mode = null; st.p = needsChoice(st.dest) ? "choice" : "overview"; renderDemo(); } });
+    $("#demo-reset").addEventListener("click", () => { Object.assign(st, { k: "welcome", dest: null, help: false, p: "waiting", step: 0, mode: null }); renderDemo(); });
     document.querySelectorAll("[data-hfdest]").forEach((b) => b.addEventListener("click", () => { hfDest = b.dataset.hfdest; renderHifiPhone(); }));
+    document.querySelectorAll("[data-hfmode]").forEach((b) => b.addEventListener("click", () => { hfMode = b.dataset.hfmode; renderHifiPhone(); }));
     $("#reach-toggle").addEventListener("change", (e) => $("#hifi").classList.toggle("show-reach", e.target.checked));
     fitScreens();
     window.addEventListener("resize", fitScreens);

@@ -117,7 +117,7 @@
       ["02", "Choose a destination", "Four large text buttons, all in the seated-reach zone.", mini(kioskWelcome(), 450, 0.19)],
       ["03", "Scan the QR code", "The kiosk shows the route preview and a QR code for the phone.", mini(kioskQR("service"), 450, 0.19)],
       ["04", "Route opens in the browser", "No app download. The overview shows the illustrative route.", mini(phoneOverview("service", "lift"), 375, 0.21)],
-      ["05", "Follow one step at a time", "A big arrow, large text and a progress bar that fills step by step.", mini(phoneStep("service", 3, "lift"), 375, 0.21)],
+      ["05", "Follow one step at a time", "A big arrow, large text and a progress bar that fills step by step.", mini(phoneStep("service", 2, "lift"), 375, 0.21)],
       ["06", "Arrive", "Confirmation with the destination name, then Done.", mini(phoneArrival("service", "lift"), 375, 0.21)],
     ];
     $("#flow").innerHTML = steps.map(([n, t, p, th], i) =>
@@ -193,11 +193,40 @@
     if (!stage) return;
     stage.innerHTML =
       `<div class="hero-kiosk">${kioskFrame(kioskQR("service"))}</div>` +
-      `<div class="hero-phone">${phoneFrame(phoneStep("service", 3, "lift"))}</div>`;
+      `<div class="hero-phone">${phoneFrame(phoneStep("service", 2, "lift"))}</div>`;
     fitHero();
+    buildDestCards();
     const qr = $("#homeQR");
     if (qr) qr.innerHTML = qrSVG("home");
   }
+  /* Home: one card per destination, linking straight to the kiosk QR screen */
+  const DEST_META = {
+    cube: "Separate building",
+    lib: "Main building",
+    event: "Main building · 5th floor",
+    service: "Main building · 1st floor",
+  };
+  function buildDestCards() {
+    const box = $("#destCards");
+    if (!box) return;
+    box.innerHTML = D.map((d) => {
+      const r = R[d.id];
+      const tags = [
+        r.real ? '<span class="tag tag-real">Photo route</span>' : '<span class="tag">Placeholder route</span>',
+        needsChoice(d.id) ? '<span class="tag">Step-free option</span>' : "",
+        r.map.outside ? '<span class="tag">Outdoor walk</span>' : "",
+      ].join("");
+      const name = d.name.split(" · ")[0];
+      return `<a class="dest-card" href="kiosk.html#${d.id}">
+        <span class="dc-ic" aria-hidden="true">${icon[d.icon]}</span>
+        <span class="dc-name">${name}</span>
+        <span class="dc-meta">${DEST_META[d.id] || ""} · ${r.time} walk</span>
+        <span class="dc-tags">${tags}</span>
+        <span class="dc-go">Open on kiosk <span aria-hidden="true">→</span></span>
+      </a>`;
+    }).join("");
+  }
+
   function fitHero() {
     const stage = $("#heroStage");
     if (!stage) return;

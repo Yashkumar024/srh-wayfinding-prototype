@@ -1,11 +1,19 @@
 /* Full-screen kiosk app. Choose a destination → real QR code that opens route.html#<destination>.
-   Resets to the welcome screen (English) after 60 seconds without a touch. */
+   Resets to the welcome screen (English) after 60 seconds without a touch.
+   kiosk.html#<destination> opens straight on that destination (used by the home page cards). */
 (function () {
   const W = window.WFS;
   const stage = document.getElementById('stage');
   const IDLE_MS = 60000;
   const st = { screen: 'welcome', dest: null, lang: 'en', help: false };
   let idle;
+
+  function fromHash() {
+    const id = location.hash.replace(/^#/, '');
+    if (W.byId(id)) { st.screen = 'qr'; st.dest = id; } else { st.screen = 'welcome'; st.dest = null; }
+    st.help = false;
+  }
+  function setHash(id) { history.replaceState(null, '', id ? `#${id}` : location.pathname); }
 
   function render() {
     stage.innerHTML = st.screen === 'welcome'
@@ -27,7 +35,7 @@
 
   function resetIdle() {
     clearTimeout(idle);
-    idle = setTimeout(() => { Object.assign(st, { screen: 'welcome', dest: null, lang: 'en', help: false }); render(); }, IDLE_MS);
+    idle = setTimeout(() => { Object.assign(st, { screen: 'welcome', dest: null, lang: 'en', help: false }); setHash(null); render(); }, IDLE_MS);
   }
 
   stage.addEventListener('click', (e) => {
@@ -35,8 +43,8 @@
     resetIdle();
     if (!b) return;
     const a = b.dataset.act, v = b.dataset.v;
-    if (a === 'select') { st.screen = 'qr'; st.dest = v; st.help = false; }
-    else if (a === 'back') { st.screen = 'welcome'; st.dest = null; st.help = false; }
+    if (a === 'select') { st.screen = 'qr'; st.dest = v; st.help = false; setHash(v); }
+    else if (a === 'back') { st.screen = 'welcome'; st.dest = null; st.help = false; setHash(null); }
     else if (a === 'lang') st.lang = v;
     else if (a === 'help') st.help = true;
     else if (a === 'closehelp') st.help = false;
@@ -44,6 +52,8 @@
   });
 
   window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', () => { fromHash(); render(); });
+  fromHash();
   render();
   resetIdle();
 })();

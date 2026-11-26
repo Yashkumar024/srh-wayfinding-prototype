@@ -7,13 +7,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261126g">
+  <link rel="stylesheet" href="styles.css?v=20261126i">
 </head>
 <body>
 
 <header class="topbar">
   <a class="brand" href="./"><span class="mark">SRH</span><span><span class="brand-long">Campus Berlin </span><b>Wayfinding</b></span></a>
   <nav class="topnav" aria-label="Main">
+    <a href="#destinations">Destinations</a>
     <a href="#how">How it works</a>
     <a href="#try">Try it</a>
     <a href="#design">Design</a>
@@ -25,12 +26,12 @@
   <div class="hero-copy">
     <span class="kicker">Student design prototype · SRH University Berlin</span>
     <h1>From the front door <em>to the right room.</em></h1>
-    <p class="hero-lede">A touchscreen kiosk outside the main entrance hands your route to your phone with a single QR scan. Then it guides you there one clear step at a time. No app, no sign-in.</p>
+    <p class="hero-lede">Tap where you’re going on the kiosk outside the main entrance, scan the QR code, and your phone guides you there step by step. No app, no sign-in.</p>
     <div class="cta-row">
       <a class="cta cta-primary" href="kiosk.html">Open the kiosk <span aria-hidden="true">→</span></a>
-      <a class="cta cta-ghost" href="#try">Try it on your phone</a>
+      <a class="cta cta-ghost" href="#destinations">Choose a destination</a>
     </div>
-    <ul class="hero-facts">
+    <ul class="hero-facts" aria-label="At a glance">
       <li><b>4</b> destinations</li>
       <li><b>1</b> QR scan</li>
       <li><b>0</b> apps to install</li>
@@ -40,6 +41,17 @@
     <div class="hero-block"></div>
     <div class="hero-stage" id="heroStage"></div>
   </div>
+</section>
+
+<section class="dests" id="destinations">
+  <div class="dests-head">
+    <div>
+      <p class="section-kicker">Destinations</p>
+      <h2 class="section-title">Where are you <em>going?</em></h2>
+    </div>
+    <p class="dests-note">Each card opens the kiosk with that destination already selected, ready to scan.</p>
+  </div>
+  <div class="dest-cards" id="destCards"></div>
 </section>
 
 <section class="how" id="how">
@@ -198,9 +210,9 @@
   <p>Student design prototype with SRH-inspired styling. Routes are illustrative placeholders. This is not an official SRH service.</p>
 </footer>
 
-<script src="routes.js?v=20261126g"></script>
-<script src="qr-codes.js?v=20261126g"></script>
-<script src="screens.js?v=20261126g"></script>
-<script src="app.js?v=20261126g"></script>
+<script src="routes.js?v=20261126i"></script>
+<script src="qr-codes.js?v=20261126i"></script>
+<script src="screens.js?v=20261126i"></script>
+<script src="app.js?v=20261126i"></script>
 </body>
 </html>

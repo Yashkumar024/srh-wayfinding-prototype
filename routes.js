@@ -90,8 +90,7 @@ window.ROUTES = {
     time: "~3 min", dist: "1 floor up",
     map: { path: [[150, 192], [150, 110], [150, 55], [45, 55]], floor: "1" },
     steps: [
-      { dir: "straight", text: "Walk through the main entrance to the Welcome Desk." },
-      { dir: "straight", text: "From the Welcome Desk, walk past the café towards the “Service Hub” sign.", photo: "photos/service-1.jpg", photoAlt: "Café with long tables; an orange “Service Hub” sign hangs at the far end" },
+      { dir: "straight", text: "Go in through the main entrance. From the Welcome Desk, walk past the café towards the “Service Hub” sign.", photo: "photos/service-1.jpg", photoAlt: "Café with long tables; an orange “Service Hub” sign hangs at the far end" },
       { dir: "door",     text: "Go through the door under the “Service Hub” sign into the corridor.", photo: "photos/service-2.jpg", photoAlt: "Orange “Service Hub” sign above an open door" },
       { dir: "left",     text: "Turn left at the big “B”.", photo: "photos/service-3.jpg", photoAlt: "Concrete wall with a large letter B and a “Service Hub” sign pointing left" },
       { dir: "straight", text: "Follow the “Service Hub” sign through the glass door to the stairs.", photo: "photos/service-4.jpg", photoAlt: "Corridor with a “Service Hub” sign and a glass door at the end" },
@@ -103,8 +102,7 @@ window.ROUTES = {
     stepFree: {
       time: "~3 min", dist: "lift to 1st floor",
       steps: [
-        { dir: "straight", text: "Walk through the main entrance to the Welcome Desk." },
-        { dir: "straight", text: "From the Welcome Desk, walk past the café towards the “Service Hub” sign.", photo: "photos/service-1.jpg", photoAlt: "Café with long tables; an orange “Service Hub” sign hangs at the far end" },
+        { dir: "straight", text: "Go in through the main entrance. From the Welcome Desk, walk past the café towards the “Service Hub” sign.", photo: "photos/service-1.jpg", photoAlt: "Café with long tables; an orange “Service Hub” sign hangs at the far end" },
         { dir: "door",     text: "Go through the door under the “Service Hub” sign into the corridor.", photo: "photos/service-2.jpg", photoAlt: "Orange “Service Hub” sign above an open door" },
         { dir: "left",     text: "Turn left at the big “B”.", photo: "photos/service-3.jpg", photoAlt: "Concrete wall with a large letter B and a “Service Hub” sign pointing left" },
         { dir: "straight", text: "Follow the “Service Hub” sign through the glass door to the lifts.", photo: "photos/service-4.jpg", photoAlt: "Corridor with a “Service Hub” sign and a glass door at the end" },

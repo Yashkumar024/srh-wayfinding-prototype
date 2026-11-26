@@ -66,7 +66,8 @@
     const s = parse();
     const n = s.base ? W.routeOf(s.id, s.mode).steps.length : 0;
     const a = b.dataset.act;
-    if (a === 'mode') location.hash = `#${s.id}/${b.dataset.v}`;
+    if (a === 'view') { W.setStepView(b.dataset.v); render(); return; }
+    else if (a === 'mode') location.hash = `#${s.id}/${b.dataset.v}`;
     else if (a === 'choose') location.hash = `#${s.id}`;
     else if (a === 'start') location.hash = `${s.base}/1`;
     else if (a === 'next') location.hash = s.i + 1 < n ? `${s.base}/${s.i + 2}` : `${s.base}/arrived`;

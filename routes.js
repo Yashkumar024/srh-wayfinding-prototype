@@ -11,6 +11,10 @@
  *   - time / dist   estimates shown on the route overview
  *   - map.path      schematic map points in a 300 × 200 grid
  *                   (entrance is at 150,192; corridors at x=150, y=55, y=110)
+ *   - steps[].photo optional photo of that step, e.g. "photos/b102-lift-3.jpg"
+ *                   (see photos/README.md). Steps without a photo show the
+ *                   large direction arrow instead.
+ *   - steps[].photoAlt optional short description of the photo
  *   - stepFree      only for routes whose main version uses stairs. The phone
  *                   asks first whether the student needs a step-free route
  *                   (lift) or is fine with the stairs. Same fields as above.

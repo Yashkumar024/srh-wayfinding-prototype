@@ -37,6 +37,7 @@ Then open http://localhost:4321. The QR codes always point to the live site, bec
 | `screens.js` | Shared screen renderers used by all three pages |
 | `kiosk.js`, `route.js`, `app.js` | Page logic for the kiosk, the phone route and the review page |
 | `styles.css` | Visual tokens (orange `#F26A21`, charcoal, warm white, stone) and layouts |
+| `photos/` | Your own step photos (optional). See [`photos/README.md`](photos/README.md) for naming and how to link them. |
 | `tools/make-qr.swift` | Regenerates `qr-codes.js` on macOS using the built-in CoreImage QR encoder |
 
 If the site moves to another address, regenerate the QR codes:

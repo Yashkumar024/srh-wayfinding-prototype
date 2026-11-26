@@ -279,12 +279,37 @@ window.WFS = (function () {
     </div>`;
   }
 
+  /* Step photos: optional steps[].photo in routes.js. The student can switch between
+     Photos and Text (arrow) view; the switch only appears when the route has photos. */
+  let stepView = "photos";
+  try { stepView = localStorage.getItem("wf-step-view") || "photos"; } catch (e) {}
+  function setStepView(v) {
+    stepView = v === "text" ? "text" : "photos";
+    try { localStorage.setItem("wf-step-view", stepView); } catch (e) {}
+  }
+  const hasPhotos = (r) => r.steps.some((s) => s.photo);
+  const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  function viewSwitch(r) {
+    if (!hasPhotos(r)) return "";
+    const b = (v, label) => `<button data-act="view" data-v="${v}" aria-pressed="${stepView === v}">${label}</button>`;
+    return `<div class="view-switch" role="group" aria-label="Step view">${b("photos", "Photos")}${b("text", "Text")}</div>`;
+  }
+  function stepVisual(s, i) {
+    const arrow = `<div class="arrow-card"><span class="stepno">0${i + 1}</span>${dirSVG(s.dir)}</div>`;
+    if (!s.photo || stepView !== "photos") return arrow;
+    // If the photo file is missing, fall back to the arrow card.
+    return `<figure class="photo-card" data-fallback="${esc(arrow)}">
+      <img src="${esc(s.photo)}" alt="${esc(s.photoAlt || "")}" onerror="const f=this.parentNode;f.outerHTML=f.dataset.fallback">
+      <span class="photo-dir" aria-hidden="true">${dirSVG(s.dir, "small")}</span><span class="stepno">0${i + 1}</span></figure>`;
+  }
+
   function phoneStep(destId, i, mode) {
     const r = routeOf(destId, mode), s = r.steps[i], n = r.steps.length;
     const next = r.steps[i + 1];
     return phoneChrome(destId, `
       ${progressHTML(i, n)}
-      <div class="arrow-card"><span class="stepno">0${i + 1}</span>${dirSVG(s.dir)}</div>
+      ${viewSwitch(r)}
+      ${stepVisual(s, i)}
       <p class="instruction">${s.text}</p>
       <div class="next-hint">${next ? `Next: <b>${next.text}</b>` : "This is the last step."}</div>`,
       `<button class="p-btn ghost" data-act="prev" aria-label="Previous step">${icon.arrowL}</button>
@@ -303,6 +328,6 @@ window.WFS = (function () {
        <button class="p-btn primary" data-act="done">Done</button>`);
   }
 
-  return { setReal, routeUrl, D, R, T, byId, icon, dirSVG, mapSVG, floorsSVG, qrSVG, needsChoice, routeOf, phoneAccessChoice, wordmark, reachOverlay,
+  return { setReal, routeUrl, D, R, T, byId, icon, dirSVG, mapSVG, floorsSVG, qrSVG, setStepView, needsChoice, routeOf, phoneAccessChoice, wordmark, reachOverlay,
     kioskWelcome, kioskQR, phoneChrome, phoneWaiting, phoneOverview, phoneStep, phoneArrival, progressHTML };
 })();

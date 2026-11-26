@@ -230,6 +230,7 @@
     else if (a === "lang") { st.lang = v; }
     else if (a === "help") { st.help = true; }
     else if (a === "closehelp") { st.help = false; }
+    else if (a === "view") { window.WFS.setStepView(v); }
     else if (a === "mode") { st.mode = v; st.p = "overview"; }
     else if (a === "choose") { st.p = "choice"; }
     else if (a === "start") { st.p = "step"; st.step = 0; }

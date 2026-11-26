@@ -54,6 +54,7 @@ window.WFS = (function () {
     pin: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s-7-7.4-7-12.5a7 7 0 0 1 14 0C19 14.6 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.6" fill="#1F1D1B"/></svg>',
     check: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"><path d="M4 12.5l5 5L20 6.5"/></svg>',
     lock: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10V7a5 5 0 0 1 10 0v3h1v12H6V10zm2 0h6V7a3 3 0 0 0-6 0z"/></svg>',
+    cube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg>',
     service: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 11V8M10 8h4"/></svg>',
     lift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="2"/><path d="M12 2.5v19"/><path d="M6.5 9.5 8.5 7l2 2.5M13.5 14.5l2 2.5 2-2.5" stroke-linecap="round"/></svg>',
     stairs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M3 20h5v-5h5v-5h5V5h3"/></svg>',
@@ -78,7 +79,11 @@ window.WFS = (function () {
   /* Schematic map — illustrative only */
   function mapSVG(destId, { wf = false } = {}) {
     const r = R[destId];
-    const blocks = [[15, 12, 125, 32], [160, 12, 125, 32], [15, 68, 125, 32], [160, 68, 125, 32], [15, 122, 125, 52], [160, 122, 125, 52]];
+    // map.outside: the destination is a separate building, drawn as its own block to the right
+    const out = !!r.map.outside;
+    const blocks = out
+      ? [[15, 12, 80, 32], [105, 12, 80, 32], [15, 68, 80, 32], [105, 68, 80, 32], [15, 122, 80, 52], [105, 122, 80, 52]]
+      : [[15, 12, 125, 32], [160, 12, 125, 32], [15, 68, 125, 32], [160, 68, 125, 32], [15, 122, 125, 52], [160, 122, 125, 52]];
     const blockFill = wf ? "#fff" : "#FBF8F4";
     const blockStroke = wf ? "#9a9a9a" : "#E2DCD3";
     const route = wf ? "#444" : "#F26A21";
@@ -88,16 +93,18 @@ window.WFS = (function () {
     return `<svg viewBox="0 0 300 205" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustrative schematic map, not to scale">
       <rect width="300" height="205" fill="${wf ? "#f3f3f3" : "#EFEBE5"}"/>
       ${blocks.map((b) => `<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}" rx="5" fill="${blockFill}" stroke="${blockStroke}" stroke-width="1.5"/>`).join("")}
+      ${out ? `<rect x="222" y="36" width="66" height="66" rx="5" fill="${wf ? "#e6e6e6" : "#fff"}" stroke="#1F1D1B" stroke-width="2.5"/>
+        <text x="255" y="122" text-anchor="middle" font-size="11" font-weight="800" font-family="Inter, Arial" fill="#1F1D1B">${r.map.label}</text>` : ""}
       <polyline points="${pts}" fill="none" stroke="${route}" stroke-width="6" stroke-dasharray="${wf ? "6 5" : "0"}" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="150" cy="192" r="8" fill="${wf ? "#fff" : "#1F1D1B"}" stroke="${wf ? "#222" : "#fff"}" stroke-width="3"/>
-      <text x="164" y="197" font-size="11" font-weight="700" font-family="Inter, Arial" fill="#1F1D1B">Entrance</text>
+      <text x="${out ? 136 : 164}" y="197" text-anchor="${out ? "end" : "start"}" font-size="11" font-weight="700" font-family="Inter, Arial" fill="#1F1D1B">Entrance</text>
       <g transform="translate(${end[0] - 12},${end[1] - 30})">
         <path d="M12 30 S0 17 0 11 a12 12 0 0 1 24 0 c0 6-12 19-12 19z" fill="${wf ? "#444" : "#1F1D1B"}"/>
         <circle cx="12" cy="11" r="4.5" fill="${wf ? "#fff" : "#F26A21"}"/>
       </g>
       <g transform="translate(232,176)">
         <rect width="58" height="22" rx="6" fill="${wf ? "#444" : "#1F1D1B"}"/>
-        <text x="29" y="15" text-anchor="middle" font-size="11" font-weight="800" font-family="Inter, Arial" fill="#fff">Floor ${r.map.floor}</text>
+        <text x="29" y="15" text-anchor="middle" font-size="11" font-weight="800" font-family="Inter, Arial" fill="#fff">${out ? "Outside" : r.map.label || "Floor " + r.map.floor}</text>
       </g>
     </svg>`;
   }

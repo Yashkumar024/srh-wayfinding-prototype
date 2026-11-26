@@ -9,9 +9,11 @@
  *   - steps[].dir   one of: straight | right | left | door | up | arrive
  *   - steps[].text  the instruction shown in large type on the phone
  *   - time / dist   estimates shown on the route overview
+ *   - map.outside   true when the destination is a separate building
+ *   - map.label     name drawn under that separate building
  *   - map.path      schematic map points in a 300 × 200 grid
  *                   (entrance is at 150,192; corridors at x=150, y=55, y=110)
- *   - steps[].photo optional photo of that step, e.g. "photos/b102-lift-3.jpg"
+ *   - steps[].photo optional photo of that step, e.g. "photos/event-lift-3.jpg"
  *                   (see photos/README.md). Steps without a photo show the
  *                   large direction arrow instead.
  *   - steps[].photoAlt optional short description of the photo
@@ -29,46 +31,24 @@
 window.NOT_SRH_FLOORS = ["2", "3"];
 
 window.DESTINATIONS = [
-  { id: "c102",  name: "Room C 1.02",             de: "Raum C 1.02",                 icon: "room"  },
-  { id: "b102",  name: "Room B 1.02",             de: "Raum B 1.02",                 icon: "room"  },
+  { id: "cube",  name: "The Cube",                de: "The Cube",                    icon: "cube"  },
   { id: "lib",   name: "Library",                 de: "Bibliothek",                  icon: "book"  },
   { id: "event", name: "Event Space · 5th floor", de: "Veranstaltungsraum · 5. OG", icon: "event" },
   { id: "service", name: "Service Hub · 1st floor", de: "Service Hub · 1. OG",     icon: "service" },
 ];
 
 window.ROUTES = {
-  c102: {
-    time: "~4 min", dist: "~180 m",
-    map: { path: [[150, 192], [150, 110], [245, 110]], floor: "1" },
+  cube: {
+    // The Cube is a separate building, so this route leaves the main building. No stairs.
+    time: "~4 min", dist: "~200 m",
+    map: { path: [[150, 192], [205, 192], [205, 69], [222, 69]], floor: "Cube", label: "The Cube", outside: true },
     steps: [
-      { dir: "straight", text: "Walk 100 metres straight ahead." },
-      { dir: "right",    text: "Turn right at the door marked “C”." },
-      { dir: "straight", text: "Continue through the corridor." },
-      { dir: "left",     text: "Turn left at the next junction." },
-      { dir: "door",     text: "Go through the door to Room C 1.02." },
+      { dir: "straight", text: "From the kiosk, walk straight ahead across the forecourt." },
+      { dir: "right",    text: "Turn right onto the footpath along the main building." },
+      { dir: "straight", text: "Follow the footpath to the separate building, The Cube." },
+      { dir: "left",     text: "Turn left at the corner towards the entrance of The Cube." },
+      { dir: "door",     text: "Go through the main door into The Cube." },
     ],
-  },
-  b102: {
-    time: "~3 min", dist: "~140 m",
-    map: { path: [[150, 192], [150, 55], [55, 55]], floor: "1" },
-    steps: [
-      { dir: "straight", text: "Walk straight ahead into the foyer." },
-      { dir: "up",       text: "Take the stairs up one floor to level 1." },
-      { dir: "left",     text: "Turn left at the corridor." },
-      { dir: "right",    text: "Turn right at the door marked “B”." },
-      { dir: "door",     text: "Go through the door to Room B 1.02." },
-    ],
-    stepFree: {
-      time: "~4 min", dist: "~160 m",
-      steps: [
-        { dir: "straight", text: "Walk straight ahead into the foyer." },
-        { dir: "right",    text: "Turn right to the lifts." },
-        { dir: "lift",     text: "Take the lift up to level 1." },
-        { dir: "left",     text: "Leave the lift and turn left at the corridor." },
-        { dir: "right",    text: "Turn right at the door marked “B”." },
-        { dir: "door",     text: "Go through the door to Room B 1.02." },
-      ],
-    },
   },
   lib: {
     time: "~2 min", dist: "~90 m",

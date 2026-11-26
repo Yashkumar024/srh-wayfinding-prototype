@@ -1,6 +1,6 @@
 # Campus Berlin Wayfinding
 
-A wayfinding prototype for the SRH University Berlin entrance. A portrait touchscreen kiosk stands outside the main entrance. A student picks one of five destinations, scans the QR code with their phone camera, and follows step-by-step walking directions in their phone's web browser.
+A wayfinding prototype for the SRH University Berlin entrance. A portrait touchscreen kiosk stands outside the main entrance. A student picks one of four destinations, scans the QR code with their phone camera, and follows step-by-step walking directions in their phone's web browser.
 
 > **Student design prototype.** All maps, steps, distances and times are **illustrative placeholders**, except the **Service Hub** route: a real, walked route with a photo for every step, shared by classmates in the course group chat. No verified campus floor plan was available. This is not an official SRH service.
 
@@ -8,8 +8,8 @@ A wayfinding prototype for the SRH University Berlin entrance. A portrait touchs
 
 | Page | What it is |
 |---|---|
-| [`kiosk.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/kiosk.html) | Full-screen 9:16 kiosk app. Five destination buttons in the seated-reach zone, EN/DE, help, and a **real QR code** for each destination. Resets to the welcome screen after 60 seconds without a touch. |
-| [`route.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/route.html) | Phone route opened by the QR code (`route.html#c102`, `#b102`, `#lib`, `#event`, `#service`). Route overview, one step at a time with a progress bar, then arrival. Routes that use stairs (Room B 1.02, Event Space, Service Hub) first ask whether you need a **step-free route** with the lift (`#b102/lift`) or are fine with stairs (`#b102/stairs`). The browser Back button works. |
+| [`kiosk.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/kiosk.html) | Full-screen 9:16 kiosk app. Four destination buttons in the seated-reach zone, EN/DE, help, and a **real QR code** for each destination. Resets to the welcome screen after 60 seconds without a touch. |
+| [`route.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/route.html) | Phone route opened by the QR code (`route.html#cube`, `#lib`, `#event`, `#service`). Route overview, one step at a time with a progress bar, then arrival. Routes that use stairs (Event Space, Service Hub) first ask whether you need a **step-free route** with the lift (`#event/lift`) or are fine with stairs (`#event/stairs`). The browser Back button works. |
 | [`index.html`](https://yashkumar024.github.io/srh-wayfinding-prototype/) | Design review page: user flow, low-fi wireframes, hi-fi screens, click-through, and accessibility notes. |
 
 ## Try it
@@ -33,7 +33,7 @@ Then open http://localhost:4321. The QR codes always point to the live site, bec
 | File | Purpose |
 |---|---|
 | `routes.js` | **All route content**: destinations, steps, times, distances, map paths, step-free (lift) alternatives, and the floors not used by the university (`NOT_SRH_FLOORS`, shown greyed out). Placeholders; replace these with verified directions. |
-| `qr-codes.js` | Real QR codes for the five route URLs (generated, don't edit by hand) |
+| `qr-codes.js` | Real QR codes for the four route URLs (generated, don't edit by hand) |
 | `screens.js` | Shared screen renderers used by all three pages |
 | `kiosk.js`, `route.js`, `app.js` | Page logic for the kiosk, the phone route and the review page |
 | `styles.css` | Visual tokens (orange `#F26A21`, charcoal, warm white, stone) and layouts |

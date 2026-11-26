@@ -1,12 +1,12 @@
 /* Phone route page — opened by the kiosk QR code (route.html#<destination>).
    Hash states: ""            → destination list
-                "#c102"       → route overview
-                "#c102/1".."5"→ step n
-                "#c102/arrived" → arrival
-   Routes with stairs (b102, event) first ask for step-free or stairs:
-                "#b102"       → choice screen
-                "#b102/lift" or "#b102/stairs" → overview, then
-                "#b102/lift/1".., "#b102/lift/arrived"
+                "#cube"       → route overview
+                "#cube/1".."5"→ step n
+                "#cube/arrived" → arrival
+   Routes with stairs (event, service) first ask for step-free or stairs:
+                "#event"      → choice screen
+                "#event/lift" or "#event/stairs" → overview, then
+                "#event/lift/1".., "#event/lift/arrived"
    The student moves forward manually; there is no GPS or location tracking. */
 (function () {
   const W = window.WFS;

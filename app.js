@@ -20,7 +20,7 @@
       <div style="height:390px;padding:14px 22px 16px;display:flex;flex-direction:column;position:relative">
         <div class="wftext" style="font-size:22px;margin-bottom:10px">Where would you like to go?</div>
         <div style="display:flex;flex-direction:column;gap:10px">
-          ${D.map((d) => `<div class="wfbtn fill" style="height:48px">${d.name}<span style="margin-left:auto">→</span></div>`).join("")}
+          ${D.map((d) => `<div class="wfbtn fill" style="height:56px">${d.name}<span style="margin-left:auto">→</span></div>`).join("")}
         </div>
         ${wfBottom}
         ${pin(3, 2, 58)}${pin(4, 2, 334)}
@@ -33,8 +33,8 @@
     return `<div class="kiosk" style="padding:0">
       <div style="height:410px;padding:18px 24px;display:flex;flex-direction:column;gap:12px;position:relative">
         <div style="display:flex;justify-content:space-between"><div class="wfbox" style="width:180px;height:30px">Logo · Campus Berlin</div><div class="wfbox" style="width:120px;height:30px">You are here</div></div>
-        <div><div style="font-size:13px;font-weight:700;color:#666">ROUTE TO</div><div class="wftext" style="font-size:36px">Room C 1.02</div></div>
-        <div style="position:relative;border:1.5px solid #9a9a9a;border-radius:6px;overflow:hidden">${mapSVG("c102", { wf: true })}<span class="wfbox" style="position:absolute;left:8px;top:8px;height:22px;font-size:10px;background:#fff">ILLUSTRATIVE ROUTE · NOT TO SCALE</span></div>
+        <div><div style="font-size:13px;font-weight:700;color:#666">ROUTE TO</div><div class="wftext" style="font-size:36px">The Cube</div></div>
+        <div style="position:relative;border:1.5px solid #9a9a9a;border-radius:6px;overflow:hidden">${mapSVG("cube", { wf: true })}<span class="wfbox" style="position:absolute;left:8px;top:8px;height:22px;font-size:10px;background:#fff">ILLUSTRATIVE ROUTE · NOT TO SCALE</span></div>
         ${pin(5, 6, 82)}${pin(6, 6, 200)}
       </div>
       <div style="height:390px;padding:14px 22px 16px;display:flex;flex-direction:column;position:relative">
@@ -55,7 +55,7 @@
     return `<div class="phone" style="border-radius:38px">
       <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 28px 0;font-size:13px;font-weight:700">9:41<span>▮▮ ◔ ▭</span></div>
       <div class="wfbox" style="margin:0 14px;height:36px;border-radius:10px">Browser address bar · route link</div>
-      <div style="display:flex;justify-content:space-between;padding:12px 18px 10px"><div class="wfbox" style="width:110px;height:26px">Logo</div><div class="wfbtn fill" style="height:28px;font-size:12px;border-radius:999px;padding:0 10px">📍 Room C 1.02</div></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 18px 10px"><div class="wfbox" style="width:110px;height:26px">Logo</div><div class="wfbtn fill" style="height:28px;font-size:12px;border-radius:999px;padding:0 10px">📍 The Cube</div></div>
       <div style="flex:1;padding:6px 18px 0;display:flex;flex-direction:column;gap:12px;position:relative">${content}</div>
       <div style="padding:12px 18px 26px;display:flex;gap:10px">${foot}</div>
     </div>`;
@@ -64,9 +64,9 @@
     <div class="wf-bar">${Array.from({ length: n }, (_, k) => `<i class="${k < i ? "on" : ""}"></i>`).join("")}</div></div>`;
 
   function wfOverview() {
-    return wfPhone(`<div class="wftext" style="font-size:28px;line-height:1.05">Route to Room C 1.02</div>
+    return wfPhone(`<div class="wftext" style="font-size:28px;line-height:1.05">Route to The Cube</div>
       <div style="font-size:15px">● You are at the university entrance</div>
-      <div style="position:relative;border:1.5px solid #9a9a9a;border-radius:6px;overflow:hidden">${mapSVG("c102", { wf: true })}</div>
+      <div style="position:relative;border:1.5px solid #9a9a9a;border-radius:6px;overflow:hidden">${mapSVG("cube", { wf: true })}</div>
       <div style="display:flex;gap:8px">${["~4 min*", "~180 m*", "5 steps"].map((x) => `<div class="wfbox" style="flex:1;height:52px">${x}</div>`).join("")}</div>
       <div style="font-size:11px;color:#555">* placeholder estimates</div>
       ${pin(9, 4, 0)}${pin(10, 4, 100)}`,
@@ -82,7 +82,7 @@
   }
   function wfArrival() {
     return wfPhone(`${wfProgress(5, 5)}
-      <div class="wfbox" style="height:300px;flex-direction:column;gap:12px;background:#d4d4d4;color:#222"><div style="width:64px;height:64px;border:3px solid #222;border-radius:50%;display:grid;place-items:center;font-size:30px">✓</div><div class="wftext" style="font-size:32px">You’ve arrived</div><div style="font-size:22px;font-weight:700">Room C 1.02</div></div>
+      <div class="wfbox" style="height:300px;flex-direction:column;gap:12px;background:#d4d4d4;color:#222"><div style="width:64px;height:64px;border:3px solid #222;border-radius:50%;display:grid;place-items:center;font-size:30px">✓</div><div class="wftext" style="font-size:32px">You’ve arrived</div><div style="font-size:22px;font-weight:700">The Cube</div></div>
       ${pin(14, 4, 70)}`,
       `<div class="wfbtn" style="flex:1;height:56px;justify-content:center;font-size:15px">Back to destinations</div><div class="wfbtn fill" style="flex:1;height:56px;justify-content:center">Done</div>`);
   }
@@ -114,11 +114,11 @@
   function buildFlow() {
     const steps = [
       ["01", "Arrive at the entrance", "A portrait kiosk stands just outside the main university entrance.", `<div style="display:grid;place-items:center;height:100%">${facadeSVG().replace('width="190"', 'width="150"')}</div>`],
-      ["02", "Choose a destination", "Five large text buttons, all in the seated-reach zone.", mini(kioskWelcome(), 450, 0.19)],
-      ["03", "Scan the QR code", "The kiosk shows the route preview and a QR code for the phone.", mini(kioskQR("c102"), 450, 0.19)],
-      ["04", "Route opens in the browser", "No app download. The overview shows the illustrative route.", mini(phoneOverview("c102"), 375, 0.21)],
-      ["05", "Follow one step at a time", "A big arrow, large text and a progress bar that fills step by step.", mini(phoneStep("c102", 1), 375, 0.21)],
-      ["06", "Arrive", "Confirmation with the destination name, then Done.", mini(phoneArrival("c102"), 375, 0.21)],
+      ["02", "Choose a destination", "Four large text buttons, all in the seated-reach zone.", mini(kioskWelcome(), 450, 0.19)],
+      ["03", "Scan the QR code", "The kiosk shows the route preview and a QR code for the phone.", mini(kioskQR("service"), 450, 0.19)],
+      ["04", "Route opens in the browser", "No app download. The overview shows the illustrative route.", mini(phoneOverview("service", "lift"), 375, 0.21)],
+      ["05", "Follow one step at a time", "A big arrow, large text and a progress bar that fills step by step.", mini(phoneStep("service", 3, "lift"), 375, 0.21)],
+      ["06", "Arrive", "Confirmation with the destination name, then Done.", mini(phoneArrival("service", "lift"), 375, 0.21)],
     ];
     $("#flow").innerHTML = steps.map(([n, t, p, th], i) =>
       `${i ? '<div class="flow-arrow">→</div>' : ""}<div class="flow-card"><div class="thumb">${th}</div><span class="n">STEP ${n}${i === 2 ? " · QR HANDOFF" : ""}</span><b>${t}</b><p>${p}</p></div>`).join("");
@@ -130,24 +130,24 @@
       `<div class="wf-pair">${col(kioskFrame(wfKioskWelcome(), true), "<b>K1 · Welcome & destination choice</b>")}
         ${notes([[1, "Title and campus name sit high on the screen: read-only, no touch needed."], [2, "Illustration area is decorative and non-interactive."], [3, "Every button is in the blue seated-reach zone: full-width, 56 px tall, text labels, 10 px gaps."], [4, "Help (Reception) and EN / DE are also in the reach zone."]])}</div>
        ${conn("Tap destination")}
-       <div class="wf-pair">${col(kioskFrame(wfKioskQR(), true), "<b>K2 · Destination selected & QR handoff</b><br>One template, repeated for all 5 destinations")}
+       <div class="wf-pair">${col(kioskFrame(wfKioskQR(), true), "<b>K2 · Destination selected & QR handoff</b><br>One template, repeated for all 4 destinations")}
         ${notes([[5, "The selected destination is the largest text on screen."], [6, "Schematic map preview, labelled as illustrative and placed high."], [7, "Large QR code with a plain instruction that it opens the route on the phone."], [8, "Back to destinations, Help and language controls stay in the reach zone."]])}</div>`;
     $("#wf-phone").innerHTML =
       `${conn("Scan QR with phone camera", true)}
        ${col(phoneFrame(wfOverview(), true), "<b>M1 · Route overview</b>")}
        ${conn("Start directions")}
-       ${col(phoneFrame(wfStep(1, "straight", "Walk 100 metres straight ahead."), true), "<b>M2 · Step 1 of 5</b>")}
+       ${col(phoneFrame(wfStep(1, "straight", "From the kiosk, walk straight ahead across the forecourt."), true), "<b>M2 · Step 1 of 5</b>")}
        ${conn("Next")}
-       ${col(phoneFrame(wfStep(2, "right", "Turn right at the door marked “C”."), true), "<b>M2 · Step 2 of 5</b>")}
+       ${col(phoneFrame(wfStep(2, "right", "Turn right onto the footpath along the main building."), true), "<b>M2 · Step 2 of 5</b>")}
        ${conn("Next ×2")}
-       ${col(phoneFrame(wfStep(4, "left", "Turn left at the next junction."), true), "<b>M2 · Step 4 of 5</b>")}
+       ${col(phoneFrame(wfStep(4, "left", "Turn left at the corner towards the entrance of The Cube."), true), "<b>M2 · Step 4 of 5</b>")}
        ${conn("I’ve arrived")}
        ${col(phoneFrame(wfArrival(), true), "<b>M3 · Arrival</b>")}`;
     $("#wf-phone-notes").innerHTML = notes([[9, "The destination stays visible in the header pill on every phone screen."], [10, "Map and estimates are clearly marked as placeholders."], [11, "Progress (‘Step 1 of 5’) plus a segmented bar that fills forward."], [12, "One large direction symbol per step."], [13, "One instruction at a time, in large type. Back and Next are in thumb reach."], [14, "Arrival confirms the destination name and offers Done or Back to destinations."]]);
   }
 
   /* ---------- Build: hi-fi gallery ---------- */
-  let hfDest = "c102", hfMode = "lift";
+  let hfDest = "service", hfMode = "lift";
   function buildHifi() {
     $("#hf-kiosk").innerHTML =
       col(kioskFrame(kioskWelcome({ pressed: null })), "<b>K1 · Welcome & destination choice</b>") +
@@ -192,8 +192,8 @@
     const stage = $("#heroStage");
     if (!stage) return;
     stage.innerHTML =
-      `<div class="hero-kiosk">${kioskFrame(kioskQR("c102"))}</div>` +
-      `<div class="hero-phone">${phoneFrame(phoneStep("c102", 1))}</div>`;
+      `<div class="hero-kiosk">${kioskFrame(kioskQR("service"))}</div>` +
+      `<div class="hero-phone">${phoneFrame(phoneStep("service", 3, "lift"))}</div>`;
     fitHero();
     const qr = $("#homeQR");
     if (qr) qr.innerHTML = qrSVG("home");

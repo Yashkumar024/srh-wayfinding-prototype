@@ -638,7 +638,4 @@ section.block .row .caption { text-align: center; }
 .phone.real .photo-card { max-height: 42vh; }
 .phone.real .view-switch button:focus-visible { outline: 3px solid var(--char); outline-offset: 2px; }
 
-/* Five destinations: slightly shorter kiosk buttons so all fit in the reach zone */
-.dest-list { gap: 8px; }
-.dest-list .dest-btn { height: 50px; }
 .real-tag { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #fff; background: #2E7D4F; padding: 4px 8px; border-radius: 6px; }
